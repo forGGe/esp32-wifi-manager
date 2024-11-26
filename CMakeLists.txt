@@ -1,21 +1,14 @@
-cmake_minimum_required(VERSION 3.16)
-include($ENV{IDF_PATH}/tools/cmake/project.cmake)
-project(esp32-wifi-manager)
-if (CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
-    message(STATUS "Your project is standalone")
+if(IDF_VERSION_MAJOR GREATER_EQUAL 4)
+    idf_component_register(SRC_DIRS src
+        REQUIRES log nvs_flash mdns wpa_supplicant lwip esp_http_server esp_wifi bootloader_support
+        INCLUDE_DIRS src
+        EMBED_FILES src/style.css src/code.js src/index.html)
 else()
-    if(IDF_VERSION_MAJOR GREATER_EQUAL 4)
-        idf_component_register(SRC_DIRS src
-                REQUIRES log nvs_flash mdns wpa_supplicant lwip esp_http_server esp_wifi bootloader_support
-                INCLUDE_DIRS src
-                EMBED_FILES src/style.css src/code.js src/index.html)
-    else()
-        set(COMPONENT_SRCDIRS src)
-        set(COMPONENT_ADD_INCLUDEDIRS src)
-        set(COMPONENT_REQUIRES log nvs_flash mdns wpa_supplicant lwip esp_http_server esp_wifi)
-        set(COMPONENT_EMBED_FILES src/style.css src/code.js src/index.html)
-        register_component()
-    endif()
+    set(COMPONENT_SRCDIRS src)
+    set(COMPONENT_ADD_INCLUDEDIRS src)
+    set(COMPONENT_REQUIRES log nvs_flash mdns wpa_supplicant lwip esp_http_server esp_wifi)
+    set(COMPONENT_EMBED_FILES src/style.css src/code.js src/index.html)
+    register_component()
 endif()
 
 
